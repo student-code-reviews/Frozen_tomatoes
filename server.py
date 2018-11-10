@@ -25,7 +25,7 @@ app = Flask(__name__)
 #     r = requests.get("http://www.omdbapi.com/?i=tt0107290&apikey=ff058cb3")
 #     movie_desc = r.json()
 #     return jsonify(movies=movie_desc)
-
+API_KEY = 'ff058cb3'
 
 @app.route('/')
 def index():
@@ -33,14 +33,40 @@ def index():
 
     return render_template('homepage_search.html')
 
+@app.route('/login_homepage')
+def login_page():
+    """Login page"""
+    return render_template('homepage.html')
+
+
+
 
 
 @app.route('/search')
 def get():
-
-    r = requests.get("http://www.omdbapi.com/?i=tt0107290&apikey=ff058cb3")
+    searchword = request.args.get('s', '')
+    r = requests.get('http://www.omdbapi.com/?s={}&apikey={}'.format(searchword, API_KEY))
     movie_desc = r.json()
     return jsonify(movies=movie_desc)
+
+
+
+
+
+
+
+@app.route('/test')
+def get_test():
+    """Homepage."""
+
+    return render_template('homepage_search_by_id.html')
+
+@app.route('/search_by_id')
+def search_test():
+    searchid = request.args.get('s_id', '')
+    r = requests.get('http://www.omdbapi.com/?i={}&apikey={}'.format(searchid, API_KEY))
+    movie_desc = r.json()
+    return jsonify(movies=movie_desc)    
 
  
 
