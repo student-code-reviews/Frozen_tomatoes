@@ -1,7 +1,7 @@
 """Utility file to seed ratings database from MovieLens data in seed_data/"""
 
 from sqlalchemy import func
-
+import json
 from model import User, Rating, Movie, connect_to_db, db
 from server import app
 
@@ -26,13 +26,13 @@ def load_movies():
         #     genre = new_dictionary["Genre"]
         #     imdb_rating = new_dictionary["imdbRating"]
         #     image_url = new_dictionary["Poster"]
-        id = file["movies"]["imdbID"]
-        title = file["movies"]["Title"]
-        year = file["movies"]["Year"]
-        genre = file["movies"]["Genre"]
-        imdb_rating = file["movies"]["imdbRating"]
-        image_url = file["movies"]["Poster"]
-
+        data = json.loads(file.read())
+        id = data['movies']["imdbID"]
+        title = data["movies"]["Title"]
+        year = data["movies"]["Year"]
+        genre = data["movies"]["Genre"]
+        imdb_rating = data["movies"]["imdbRating"]
+        image_url = data['movies']['Poster']
     # for i, row in enumerate(open(movie_filename)):
     #     row = row.rstrip()
 
@@ -43,7 +43,7 @@ def load_movies():
                   title=title,
                   year=year,
                   genre=genre,
-                  imdb_rating=imdbRating,
+                  imdb_rating=imdb_rating,
                   image_url=image_url)
 
         # We need to add to the session or it won't ever be stored

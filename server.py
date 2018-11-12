@@ -4,6 +4,7 @@
 
 from flask import Flask, render_template, request, flash, redirect, session, jsonify
 from flask_debugtoolbar import DebugToolbarExtension
+from model import User, Rating, Movie, connect_to_db, db
 import requests
 
 
@@ -66,9 +67,16 @@ def search_test():
     searchid = request.args.get('s_id', '')
     r = requests.get('http://www.omdbapi.com/?i={}&apikey={}'.format(searchid, API_KEY))
     movie_desc = r.json()
+    # movie = Movie(id=id,
+    #               title=title,
+    #               year=year,
+    #               genre=genre,
+    #               imdb_rating=imdb_rating,
+    #               image_url=image_url)
+    # db.session.add(movie)
+    # db.session.commit()
     return jsonify(movies=movie_desc)    
 
- 
 
 
 
